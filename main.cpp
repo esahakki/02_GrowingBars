@@ -32,10 +32,12 @@ void Initialize( );
 void Cleanup( );
 void QuitOnSDLError( );
 void QuitOnOpenGlError( );
-
+void DrawFirstBar();
+void DrawSecondBar();
 // Variables
 SDL_Window* g_pWindow{ nullptr }; // The window we'll be rendering to
 SDL_GLContext g_pContext; // OpenGL context
+int g_NrFrames{ 0 };
 #pragma endregion coreDeclarations
 
 #pragma region gameDeclarations
@@ -78,17 +80,76 @@ int main( int argc, char* args[] )
 #pragma region gameImplementations
 void ClearBackground( )
 {
-	glClearColor( 185.0f / 255.0f, 211.0f / 255.0f, 238.0f / 255.0f, 1.0f );
+	glClearColor( 0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 1.0f );
 	glClear( GL_COLOR_BUFFER_BIT );
 }
 
 void Draw( )
 {
 	ClearBackground( );
+	g_NrFrames++;
+	DrawFirstBar();
+	DrawSecondBar();
 	// add your drawing code here
 	
 }
 #pragma endregion gameImplementations
+
+void DrawFirstBar()
+{
+	float BarWidth{ float(g_NrFrames % 255) };
+	float BarHeight{ 30.f };
+	float BarWidthMax{255.f};
+	float basex{ (g_WindowWidth - 255.0f)/2 }, basey{ g_WindowHeight*(4.0f/5.0f) };
+
+	// bar drawing
+	glColor3f(200.f / 255.f, 200.f / 255.f, 0.f / 255.f);
+	glLineWidth(1.0f);
+	glBegin(GL_POLYGON);
+	glVertex2f(basex, basey);
+	glVertex2f(basex + BarWidth, basey);
+	glVertex2f(basex + BarWidth, basey + BarHeight);
+	glVertex2f(basex, basey + BarHeight);
+	glEnd();
+
+	// foreground white border line
+	glColor3f(255.f / 255.f, 255.f / 255.f, 255.f / 255.f);
+	glLineWidth(1.0f);
+	glBegin(GL_LINE_LOOP);
+	glVertex2f(basex, basey);
+	glVertex2f(basex + BarWidthMax, basey);
+	glVertex2f(basex + BarWidthMax, basey + BarHeight);
+	glVertex2f(basex, basey + BarHeight);
+	glEnd();
+}
+
+void DrawSecondBar()
+{
+	float BarWidth{ float((g_NrFrames / 30) * 15 % 255) };
+	float BarHeight{ 30.f };
+	float BarWidthMax{ 255.f };
+	float basex{ (g_WindowWidth - 255.0f) / 2 }, basey{ g_WindowHeight * (2.0f / 5.0f) };
+
+	// bar drawing
+	glColor3f(((BarWidth + 120.f) / 255), 20.f / 255.f, 0.f / 255.f);
+	glLineWidth(1.0f);
+	glBegin(GL_POLYGON);
+	glVertex2f(basex, basey);
+	glVertex2f(basex + BarWidth, basey);
+	glVertex2f(basex + BarWidth, basey + BarHeight);
+	glVertex2f(basex, basey + BarHeight);
+	glEnd();
+
+	// foreground white border line
+	glColor3f(255.f / 255.f, 255.f / 255.f, 255.f / 255.f);
+	glLineWidth(1.0f);
+	glBegin(GL_LINE_LOOP);
+	glVertex2f(basex, basey);
+	glVertex2f(basex + BarWidthMax, basey);
+	glVertex2f(basex + BarWidthMax, basey + BarHeight);
+	glVertex2f(basex, basey + BarHeight);
+	glEnd();
+}
 
 #pragma region coreImplementations
 void Initialize( )
