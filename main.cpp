@@ -88,7 +88,6 @@ void Draw( )
 {
 	ClearBackground( );
 	g_NrFrames++;
-	if (g_NrFrames > 255) g_NrFrames = 0;
 	DrawFirstBar();
 	DrawSecondBar();
 	// add your drawing code here
@@ -104,7 +103,7 @@ void DrawFirstBar()
 	float basex{ (g_WindowWidth - 255.0f)/2 }, basey{ g_WindowHeight*(4.0f/5.0f) };
 
 	// bar drawing
-	glColor3f(20.f / 255.f, 20.f / 255.f, 0.f / 255.f);
+	glColor3f(200.f / 255.f, 200.f / 255.f, 0.f / 255.f);
 	glLineWidth(1.0f);
 	glBegin(GL_POLYGON);
 	glVertex2f(basex, basey);
@@ -126,13 +125,13 @@ void DrawFirstBar()
 
 void DrawSecondBar()
 {
-	float BarWidth{ float((g_NrFrames*30) % 255) };
+	float BarWidth{ float((g_NrFrames / 30) * 15 % 255) };
 	float BarHeight{ 30.f };
 	float BarWidthMax{ 255.f };
 	float basex{ (g_WindowWidth - 255.0f) / 2 }, basey{ g_WindowHeight * (2.0f / 5.0f) };
 
 	// bar drawing
-	glColor3f(20.f / 255.f, 20.f / 255.f, 0.f / 255.f);
+	glColor3f(((BarWidth + 120.f) / 255), 20.f / 255.f, 0.f / 255.f);
 	glLineWidth(1.0f);
 	glBegin(GL_POLYGON);
 	glVertex2f(basex, basey);
